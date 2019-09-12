@@ -10,7 +10,7 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
-var ref = database.ref("positions");
+var ref = database.ref("records");
 
 var cp, sendButton, selectMode, userId, selectType;
 
