@@ -39,39 +39,33 @@ function setup() {
       'lemonchiffon': color(255, 250, 205),
       'peachpuff': color(255, 218, 185)
   }
-  createCanvas(windowWidth, windowHeight);
-  background(cp.lemonchiffon);
+  noCanvas();
 
-  var userId = createInput('');
+  userId = select("#user-id", "body");
+
   userId
-    .position(50, 10)
     .input(function(){
       data.id = this.value();
     });
 
-  selectMode = createSelect();
+  selectMode = select("#transportation-mode", "body");
   transportationModes.forEach( d => { selectMode.option(d) });
   selectMode
-    .position(50, 50)
     .changed(function(){
       data.transportationMode = this.value();
     });
 
-  selectType = createSelect();
+  selectType = select("#type", "body");;
   types.forEach( d => { selectType.option(d) });
   selectType
-    .position(50, 100)
     .changed(function(){
       data.type = this.value();
     });
 
   sendButton = createButton('Submit');
   sendButton
-    .position(50, 150)
-    .style('background-color', cp.peachpuff)
     .mousePressed(sendData);
-
-}
+  }
 
 function draw() {
   // put drawing code here
@@ -97,6 +91,10 @@ function sendData() {
         // Send to 🔥🔥🔥
         console.log('send this data to firebase:', data);
         ref.push(data, function(){ console.log('completed')});
+
+        document.getElementsByTagName("BUTTON")[0].innerHTML = "Uploaded";
+        document.getElementsByTagName("BUTTON")[0].disabled = true;
+        document.getElementsByTagName("BUTTON")[0].classList.add("uploaded");
       },
       function(error){
         throw error;

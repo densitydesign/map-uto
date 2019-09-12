@@ -6,8 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style>
         body {
-            padding: 0;
+            color: #222222;
+            font-size: 1rem;
+            padding: 1rem;
             margin: 0;
+            background: lemonchiffon;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.4;
+        }
+
+        button, input, select {
+          font-size: 1rem;
+          display: block;
+          margin: 1rem 0;
+          width: 100%;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+
+        button {
+          padding: 0.8rem 0;
+          border: 1px solid rgba(0,0,0,.2);
+          border-radius: 10rem;
+          text-transform: uppercase;
+          background: peachpuff;
+          position: fixed;
+          bottom: 1vh;
+          left: 1rem;
+          width: calc(100% - 2rem);
+        }
+
+        button:hover {
+          cursor: pointer;
+        }
+
+        input {
+          font-size: 1rem;
+          padding: 0.5rem;
+          width: 94%;
+        }
+
+        .uploaded {
+          background: palegreen;
+        }
+
+        .label {
+          font-size: 0.8rem;
+          margin: 2rem 0 0 0;
+          font-weight: 700;
         }
     </style>
 
@@ -23,32 +68,19 @@
 </head>
 
 <body>
-  <!-- <p id="testtest"></p>
-  <script>
-  var options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0
-  };
+  <h2>Map-athon</h2>
+  <h3>Mapping transportation in Maputo</h3>
+  <p>Use this application to set the starting and ending point of your trip in Maputo. Download <em>GasBuddy</em> (available on the App Store and Play Store) to allow tracking of the whole trip.</p>
+  <p>If you're on Android and can't download GasBuddy, <a href="https://apkpure.com/gasbuddy-find-free-cheap-gas/gbis.gbandroid" target="_blank">click here</a></p>
 
-  function success(pos) {
-  var crd = pos.coords;
+  <input id="user-id" autocomplete="nickname" placeholder="Insert your name..."></input>
 
-    console.log('Your current position is:', crd);
-    console.log(`Latitude : ${crd.latitude}`);
-    console.log(`Longitude: ${crd.longitude}`);
-    console.log(`More or less ${crd.accuracy} meters.`);
+  <p class="label">Which transportation are you using?</p>
+  <select id="transportation-mode"></select>
 
-    document.getElementById('testtest').innerHTML = `Latitude : ${crd.latitude} <br/> Longitude: ${crd.longitude}`
-  }
+  <p class="label">In your trip, you're at the:</p>
+  <select id="type"></select>
 
-  function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-  }
-
-  navigator.geolocation.getCurrentPosition(success, error, options);
-
-  </script> -->
 </body>
 
 </html>
