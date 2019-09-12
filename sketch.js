@@ -12,21 +12,26 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 var ref = database.ref("positions");
 
-var cp, sendButton, selectMode, userId;
+var cp, sendButton, selectMode, userId, selectType;
 
 var transportationModes = ["Machinbombo", "Chapas", "Private Car", "Taxi", "Walk", "Xopela"];
+var types = ["start", "end"];
 
 var data = {
-  'id': undefined,
-  'transportationMode': undefined,
-  'longitude': undefined,
-  'latitude':undefined,
-  'type': undefined,
-  'timestamps': undefined
+  'id': 'undefined',
+  'transportationMode': transportationModes[0],
+  'longitude': 0,
+  'latitude': 0,
+  'type': types[0],
+  'timestamp': 0
 }
+
+var getPosition;
 
 function preload(){
   // put preload code here
+
+  getPosition = getCurrentPosition;
 }
 
 function setup() {
@@ -47,14 +52,22 @@ function setup() {
   selectMode = createSelect();
   transportationModes.forEach( d => { selectMode.option(d) });
   selectMode
-    .position(50, 30)
+    .position(50, 50)
     .changed(function(){
       data.transportationMode = this.value();
     });
 
+  selectType = createSelect();
+  types.forEach( d => { selectType.option(d) });
+  selectType
+    .position(50, 100)
+    .changed(function(){
+      data.type = this.value();
+    });
+
   sendButton = createButton('Submit');
   sendButton
-    .position(50, 100)
+    .position(50, 150)
     .style('background-color', cp.peachpuff)
     .mousePressed(sendData);
 
@@ -66,9 +79,28 @@ function draw() {
 }
 
 function sendData() {
+  // console.log('can geolocate?', geoCheck())
+  if(geoCheck() == true){
+		getPosition(
+      function(result){
 
-  console.log('Can geolocate?', geoCheck());
-  console.log('send this data to firebase:', data);
+        // store location data
+        console.log("location data:", result)
+        data.longitude = result.longitude;
+        data.latitude = result.latitude;
+        data.accuracy = result.accuracy;
 
-  ref.push(data);
+        // store timestamp
+        var t = new Date();
+        data.timestamp = t.getTime();
+
+        // Send to 🔥🔥🔥
+        console.log('send this data to firebase:', data);
+        ref.push(data, function(){ console.log('completed')});
+      },
+      function(error){
+        throw error;
+      });
+
+	}
 }
