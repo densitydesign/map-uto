@@ -1,4 +1,13 @@
 // Firebase init
+var firebaseConfig = {
+  apiKey: "AIzaSyBsZUWVoo_CMAubeQUciNNHYVUrXVnx6QI",
+  authDomain: "map-uto.firebaseapp.com",
+  databaseURL: "https://map-uto.firebaseio.com",
+  projectId: "map-uto",
+  storageBucket: "",
+  messagingSenderId: "577833156030",
+  appId: "1:577833156030:web:98f1926febd0cd2b46cdef"
+};
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 var ref = database.ref("positions");
