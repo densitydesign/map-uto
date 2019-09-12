@@ -1,3 +1,8 @@
+// Firebase init
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
+var ref = database.ref("positions");
+
 var cp, sendButton, selectMode, userId;
 
 var transportationModes = ["Machinbombo", "Chapas", "Private Car", "Taxi", "Walk", "Xopela"];
@@ -5,13 +10,10 @@ var transportationModes = ["Machinbombo", "Chapas", "Private Car", "Taxi", "Walk
 var data = {
   'id': undefined,
   'transportationMode': undefined,
-  'positions': []
-}
-
-var positionTemplate = {
   'longitude': undefined,
-  'latitude': undefined,
-  'timestamp': undefined
+  'latitude':undefined,
+  'type': undefined,
+  'timestamps': undefined
 }
 
 function preload(){
@@ -47,29 +49,6 @@ function setup() {
     .style('background-color', cp.peachpuff)
     .mousePressed(sendData);
 
-  // Firebase credentials
-  var firebaseConfig = {
-    apiKey: "AIzaSyBsZUWVoo_CMAubeQUciNNHYVUrXVnx6QI",
-    authDomain: "map-uto.firebaseapp.com",
-    databaseURL: "https://map-uto.firebaseio.com",
-    projectId: "map-uto",
-    storageBucket: "",
-    messagingSenderId: "577833156030",
-    appId: "1:577833156030:web:98f1926febd0cd2b46cdef"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  // console.log(firebase);
-
-  var database = firebase.database();
-  var ref = database.ref("positions");
-
-  var data = {
-    name: "AAA",
-    transport: "Machinebombo"
-  }
-
-  ref.push(data);
 }
 
 function draw() {
@@ -81,4 +60,6 @@ function sendData() {
 
   console.log('Can geolocate?', geoCheck());
   console.log('send this data to firebase:', data);
+
+  ref.push(data);
 }
