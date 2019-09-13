@@ -74,6 +74,9 @@ function draw() {
 
 function sendData() {
   // console.log('can geolocate?', geoCheck())
+  document.getElementsByTagName("BUTTON")[0].innerHTML = "Loading...";
+  document.getElementsByTagName("BUTTON")[0].disabled = true;
+  document.getElementsByTagName("BUTTON")[0].classList.add("loading");
   if(geoCheck() == true){
 		getPosition(
       function(result){
