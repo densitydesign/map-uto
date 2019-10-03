@@ -10,20 +10,18 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
-var ref = database.ref("records");
+var ref = database.ref("continuous");
+
+var ping = 0;
 
 var cp, sendButton, selectMode, userId, selectType;
 
-var transportationModes = ["Machinbombo", "Chapas", "Private Car", "Taxi", "Walk", "Xopela"];
-var types = ["start", "end"];
+var transportationModes = ["ATM", ];
 
 var data = {
   'id': 'undefined',
   'transportationMode': transportationModes[0],
-  'longitude': 0,
-  'latitude': 0,
-  'type': types[0],
-  'timestamp': 0
+  'path': []
 }
 
 var getPosition;
@@ -31,7 +29,7 @@ var getPosition;
 function preload(){
   // put preload code here
 
-  getPosition = getCurrentPosition;
+  // getPosition = intervalCurrentPosition;
 }
 
 function setup() {
@@ -55,12 +53,9 @@ function setup() {
       data.transportationMode = this.value();
     });
 
-  selectType = select("#type", "body");;
-  types.forEach( d => { selectType.option(d) });
-  selectType
-    .changed(function(){
-      data.type = this.value();
-    });
+  getButton = createButton('Start geolocation');
+
+  getButton.mousePressed(getData);
 
   sendButton = createButton('Submit');
   sendButton
@@ -68,40 +63,45 @@ function setup() {
   }
 
 function draw() {
-  // put drawing code here
   background(cp.lemonchiffon);
 }
 
-function sendData() {
-  // console.log('can geolocate?', geoCheck())
-  document.getElementsByTagName("BUTTON")[0].innerHTML = "Loading...";
+function getData() {
+
+  document.getElementsByTagName("BUTTON")[0].innerHTML = "Locating...";
   document.getElementsByTagName("BUTTON")[0].disabled = true;
   document.getElementsByTagName("BUTTON")[0].classList.add("loading");
   if(geoCheck() == true){
-		getPosition(
+		intervalCurrentPosition(
       function(result){
-
         // store location data
-        console.log("location data:", result)
-        data.longitude = result.longitude;
-        data.latitude = result.latitude;
-        data.accuracy = result.accuracy;
+        ping++;
+        let point = {};
+        console.log("location data:", result);
 
         // store timestamp
         var t = new Date();
-        data.timestamp = t.getTime();
 
-        // Send to 🔥🔥🔥
-        console.log('send this data to firebase:', data);
-        ref.push(data, function(){ console.log('completed')});
+        point.longitude = result.longitude;
+        point.latitude = result.latitude;
+        point.accuracy = result.accuracy;
+        point.timestamp = t.getTime();
 
-        document.getElementsByTagName("BUTTON")[0].innerHTML = "Uploaded";
-        document.getElementsByTagName("BUTTON")[0].disabled = true;
-        document.getElementsByTagName("BUTTON")[0].classList.add("uploaded");
-      },
-      function(error){
-        throw error;
-      });
+        data.path.push(point);
 
+      }, 2000);
 	}
+}
+
+function sendData() {
+
+  clearIntervalPos();
+  // Send to 🔥🔥🔥
+  console.log('send this data to firebase:', data);
+  ref.push(data, function(){ console.log('completed')});
+
+  document.getElementsByTagName("BUTTON")[1].innerHTML = "Uploaded";
+  document.getElementsByTagName("BUTTON")[1].disabled = true;
+  document.getElementsByTagName("BUTTON")[1].classList.add("uploaded");
+
 }
