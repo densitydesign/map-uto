@@ -110,7 +110,7 @@ function sendData() {
   clearIntervalPos();
   // Send to 🔥🔥🔥
   console.log('send this data to firebase:', data);
-  // ref.push(data, function(){ console.log('completed')});
+  ref.push(data, function(){ console.log('completed')});
 
   d3.select("body").style("background", "lemonchiffon");
 
