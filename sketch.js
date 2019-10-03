@@ -12,11 +12,9 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 var ref = database.ref("continuous");
 
-var ping = 0;
-
 var cp, sendButton, selectMode, userId, selectType;
 
-var transportationModes = ["ATM", ];
+var transportationModes = ["Mezzi pubblici", "A piedi", "Bicicletta"];
 
 var data = {
   'id': 'undefined',
@@ -53,11 +51,14 @@ function setup() {
       data.transportationMode = this.value();
     });
 
-  getButton = createButton('Start geolocation');
+  getButton = createButton('Start geolocation')
+  .id("geolocate");
 
   getButton.mousePressed(getData);
 
-  sendButton = createButton('Submit');
+  sendButton = createButton('Submit')
+  .id("send-data");
+
   sendButton
     .mousePressed(sendData);
   }
@@ -67,15 +68,24 @@ function draw() {
 }
 
 function getData() {
+  d3.select("#geolocate")
+  .classed("loading", true)
+  .attr("disabled", "disabled");
 
-  document.getElementsByTagName("BUTTON")[0].innerHTML = "Locating...";
-  document.getElementsByTagName("BUTTON")[0].disabled = true;
-  document.getElementsByTagName("BUTTON")[0].classList.add("loading");
+  // document.getElementsByTagName("BUTTON")[0].innerHTML = "Locating...";
+  // document.getElementsByTagName("BUTTON")[0].disabled = true;
+  // document.getElementsByTagName("BUTTON")[0].classList.add("loading");
   if(geoCheck() == true){
 		intervalCurrentPosition(
       function(result){
+
+        d3.select("body").style("background", "PowderBlue");
+
+        d3.select("#geolocate")
+        .text("Sharing location...");
+
         // store location data
-        ping++;
+
         let point = {};
         console.log("location data:", result);
 
@@ -89,7 +99,9 @@ function getData() {
 
         data.path.push(point);
 
-      }, 2000);
+        d3.select("#sharing").text(result.latitude + " " + result.longitude + " " + t.getTime());
+
+      }, 5000);
 	}
 }
 
@@ -98,10 +110,19 @@ function sendData() {
   clearIntervalPos();
   // Send to 🔥🔥🔥
   console.log('send this data to firebase:', data);
-  ref.push(data, function(){ console.log('completed')});
+  // ref.push(data, function(){ console.log('completed')});
 
-  document.getElementsByTagName("BUTTON")[1].innerHTML = "Uploaded";
-  document.getElementsByTagName("BUTTON")[1].disabled = true;
-  document.getElementsByTagName("BUTTON")[1].classList.add("uploaded");
+  d3.select("body").style("background", "lemonchiffon");
+
+  d3.select("#geolocate")
+  .classed("loading", true)
+  .text("Location sharing stopped");
+
+  d3.select("#sharing").text("Thanks♪(･ω･)ﾉ")
+
+  d3.select("#send-data")
+  .classed("uploaded", true)
+  .attr("disabled", "disabled")
+  .text("Data uploaded!");
 
 }
