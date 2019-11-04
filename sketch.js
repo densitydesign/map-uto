@@ -14,7 +14,7 @@ var ref = database.ref("continuous");
 
 var cp, sendButton, selectMode, userId, selectType;
 
-var transportationModes = ["Mezzi pubblici", "A piedi", "Bicicletta"];
+var transportationModes = ["Walking", "Biking", "Machimbombo", "Chapas", "MyLove", "Chopela"];
 
 var data = {
   'id': 'undefined',
