@@ -10,11 +10,11 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
-var ref = database.ref("records");
+var ref = database.ref("milano");
 
 var cp, sendButton, selectMode, userId, selectType;
 
-var transportationModes = ["Machinbombo", "Chapas", "Private Car", "Taxi", "Walk", "Xopela"];
+var transportationModes = ["Bus", "Tram", "Metropolitana", "Treno", "Auto (privata)", "Auto (sharing)", "A piedi", "Bici (privata)", "Bici (sharing)", "Motorino (privato)", "Motorino (sharing)", "Monopattino (privato)", "Monopattino (sharing)"];
 var types = ["start", "end"];
 
 var data = {
